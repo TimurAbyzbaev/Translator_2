@@ -4,7 +4,7 @@ import com.example.translator_2.AppState
 import com.example.translator_2.Data_source.DataSourceLocal
 import com.example.translator_2.Data_source.DataSourceRemote
 import com.example.translator_2.Interactors.MainInteractor
-import com.example.translator_2.View.View
+import com.example.translator_2.presentation.View.View
 import com.example.translator_2.repository.RepositoryImplementation
 import com.example.translator_2.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable

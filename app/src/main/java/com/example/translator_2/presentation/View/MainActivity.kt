@@ -1,4 +1,4 @@
-package com.example.translator_2.View
+package com.example.translator_2.presentation.View
 
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +20,7 @@ class MainActivity : BaseActivity<AppState>() {
 
     private var adapter: MainAdapter? = null
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
-        object : MainAdapter.OnListItemClickListener{
+        object : MainAdapter.OnListItemClickListener {
             override fun onItemClick(data: DataModel) {
                 Toast.makeText(this@MainActivity, data.text, Toast.LENGTH_SHORT).show()
             }
@@ -37,7 +37,7 @@ class MainActivity : BaseActivity<AppState>() {
         binding.searchFab.setOnClickListener {
             val searchDialogFragment = SearchDialogFragment.newInstance()
             searchDialogFragment.setOnSearchClickListener(object  :
-            SearchDialogFragment.OnSearchClickListener{
+                SearchDialogFragment.OnSearchClickListener {
                 override fun onClick(searchWord: String) {
                     presenter.getData(searchWord, true)
                 }
