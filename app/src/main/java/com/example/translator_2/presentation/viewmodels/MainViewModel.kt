@@ -2,19 +2,19 @@ package com.example.translator_2.presentation.viewmodels
 
 import androidx.lifecycle.LiveData
 import com.example.translator_2.AppState
-import com.example.translator_2.Data_source.DataSourceLocal
-import com.example.translator_2.Data_source.DataSourceRemote
 import com.example.translator_2.Interactors.MainInteractor
-import com.example.translator_2.repository.RepositoryImplementation
 import io.reactivex.observers.DisposableObserver
+import javax.inject.Inject
 
-class MainViewModel(
-    private val interactor: MainInteractor = MainInteractor(
-        RepositoryImplementation(DataSourceRemote()),
-        RepositoryImplementation(DataSourceLocal())
-    )
+class MainViewModel @Inject constructor(
+    private val interactor: MainInteractor
 ) : BaseViewModel<AppState>() {
+
     private var appState: AppState? = null
+
+    fun subscribe(): LiveData<AppState> {
+        return liveDataForViewToObserve
+    }
 
     //переопределение метода из BaseViewModel
     override fun getData(word: String, isOnline: Boolean): LiveData<AppState> {
@@ -25,7 +25,7 @@ class MainViewModel(
                 .doOnSubscribe { liveDataForViewToObserve.value = AppState.Loading(null) }
                 .subscribeWith(getObserver())
         )
-        return  super.getData(word, isOnline)
+        return super.getData(word, isOnline)
     }
 
     private fun getObserver(): DisposableObserver<AppState> {

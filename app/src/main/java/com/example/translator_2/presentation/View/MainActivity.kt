@@ -13,12 +13,17 @@ import com.example.translator_2.R
 import com.example.translator_2.api.DataModel
 import com.example.translator_2.databinding.ActivityMainBinding
 import com.example.translator_2.presentation.viewmodels.MainViewModel
+import dagger.android.AndroidInjection
+import javax.inject.Inject
 
 class MainActivity : BaseActivity<AppState>() {
     //создаем модель
-    override val model: MainViewModel by lazy {
-        ViewModelProvider(this)[MainViewModel::class.java]
-    }
+//    override val model: MainViewModel by lazy {
+//        ViewModelProvider(this)[MainViewModel::class.java]
+//    }
+    @Inject
+    internal lateinit var viewModelFactory: ViewModelProvider.Factory
+    override lateinit var model: MainViewModel
 
     //Создаем Observer, с помощью которого подписываемся на изменения LiveData
     private val observer = Observer<AppState> { renderData(it) }
@@ -35,9 +40,15 @@ class MainActivity : BaseActivity<AppState>() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        model = viewModelFactory.create(MainViewModel::class.java)
+        model.subscribe().observe(this@MainActivity, Observer<AppState> { renderData(it) })
+
         binding.searchFab.setOnClickListener {
             val searchDialogFragment = SearchDialogFragment.newInstance()
             searchDialogFragment.setOnSearchClickListener(object :
