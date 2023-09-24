@@ -19,20 +19,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import javax.inject.Inject
 
 class MainActivity : BaseActivity<AppState>() {
-    //создаем модель
-//    override val model: MainViewModel by lazy {
-//        ViewModelProvider(this)[MainViewModel::class.java]
-//    }
 
     override lateinit var model: MainViewModel
-
-    //Создаем Observer, с помощью которого подписываемся на изменения LiveData
-    private val observer = Observer<AppState> { renderData(it) }
-
 
     private lateinit var binding: ActivityMainBinding
 
     private var adapter: MainAdapter? = null
+
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
             override fun onItemClick(data: DataModel) {
@@ -75,7 +68,7 @@ class MainActivity : BaseActivity<AppState>() {
             override fun onClick(searchWord: String) {
                 //получаем LiveData через метод getData и подписываемся
                 // на изменения, передавая туда observer
-                model.getData(searchWord, true).observe(this@MainActivity, observer)
+                model.getData(searchWord, true)
             }
         })
         searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
@@ -120,7 +113,7 @@ class MainActivity : BaseActivity<AppState>() {
         showViewError()
         binding.errorTextview.text = error ?: getString(R.string.undefined_error)
         binding.reloadButton.setOnClickListener {
-            model.getData("hi", true).observe(this, observer)
+            model.getData("hi", true)
         }
     }
 
