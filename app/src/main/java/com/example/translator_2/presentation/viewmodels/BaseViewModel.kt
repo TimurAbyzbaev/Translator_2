@@ -6,18 +6,37 @@ import androidx.lifecycle.ViewModel
 import com.example.translator_2.AppState
 import com.example.translator_2.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.*
 
 abstract class BaseViewModel<T : AppState>(
-    protected val liveDataForViewToObserve: MutableLiveData<T> =
-        MutableLiveData(),
-    protected val compositeDisposable: CompositeDisposable =
-        CompositeDisposable(),
-    protected val schedulerProvider: SchedulerProvider = SchedulerProvider()
+    protected open val _mutableLiveData: MutableLiveData<T> =
+        MutableLiveData()
 ) : ViewModel() {
-    open fun getData(word: String, isOnline: Boolean): LiveData<T> =
-        liveDataForViewToObserve
+    // Объявляем свой собственный скоуп
+    // В качестве аргумента передается CoroutineContext, который мы составляем
+    // через "+" из трех частей:
+    // - Dispatchers.Main говорит, что результат работы предназначен для
+    // основного потока;
+    // - SupervisorJob() позволяет всем дочерним корутинам выполняться
+    // независимо, то есть, если какая-то корутина упадёт с ошибкой, остальные
+    // будут выполнены нормально;
+    // - CoroutineExceptionHandler позволяет перехватывать и отрабатывать
+    // ошибки и краши
 
+    protected val viewModelCoroutineScope = CoroutineScope(
+        Dispatchers.Main
+                    + SupervisorJob()
+                    + CoroutineExceptionHandler {_, throwable -> handleError(throwable)}
+    )
+
+    abstract fun getData(word: String, isOnline: Boolean)
+    abstract fun handleError(error: Throwable)
     override fun onCleared() {
-        compositeDisposable.clear()
+        super.onCleared()
+        cancelJob()
     }
+    protected fun cancelJob(){
+        viewModelCoroutineScope.coroutineContext.cancelChildren()
+    }
+
 }
