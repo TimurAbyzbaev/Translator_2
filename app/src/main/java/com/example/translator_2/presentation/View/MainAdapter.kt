@@ -9,10 +9,11 @@ import com.example.translator_2.R
 import com.example.translator_2.api.DataModel
 
 class MainAdapter(
-    private var onListItemClickListener: OnListItemClickListener,
-    private var data: List<DataModel>
+    private var onListItemClickListener: OnListItemClickListener
 ) :
     RecyclerView.Adapter<MainAdapter.RecyclerItemViewHolder>() {
+
+    private var data: List<DataModel> = arrayListOf()
     fun setData(data: List<DataModel>) {
         this.data = data
         notifyDataSetChanged()
