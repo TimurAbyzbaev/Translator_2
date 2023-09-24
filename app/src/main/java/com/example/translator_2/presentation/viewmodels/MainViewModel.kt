@@ -6,7 +6,7 @@ import com.example.translator_2.Interactors.MainInteractor
 import io.reactivex.observers.DisposableObserver
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor(
+class MainViewModel(
     private val interactor: MainInteractor
 ) : BaseViewModel<AppState>() {
 

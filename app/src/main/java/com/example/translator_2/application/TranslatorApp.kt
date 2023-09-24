@@ -1,10 +1,12 @@
 package com.example.translator_2.application
 
 import android.app.Application
+import com.example.translator_2.di.koin.application
+import com.example.translator_2.di.koin.mainScreen
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
-import com.example.translator_2.di.DaggerAppComponent
+import org.koin.core.context.startKoin
 import javax.inject.Inject
 
 // Обратите внимание на dispatchingAndroidInjector и интерфейс Dagger'а
@@ -13,7 +15,7 @@ import javax.inject.Inject
 //методы для разработчиков под Андроид для эффективного внедрения компонентов
 //платформы, таких как Активити, Сервис и т. п.
 
-class TranslatorApp: Application(), HasAndroidInjector {
+class TranslatorApp : Application(), HasAndroidInjector {
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
@@ -24,9 +26,9 @@ class TranslatorApp: Application(), HasAndroidInjector {
 
     override fun onCreate() {
         super.onCreate()
-        DaggerAppComponent.builder()
-            .application(this)
-            .build()
-            .inject(this)
+
+        startKoin {
+            modules(listOf(application, mainScreen))
+        }
     }
 }
