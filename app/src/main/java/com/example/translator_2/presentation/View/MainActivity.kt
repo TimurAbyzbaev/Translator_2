@@ -14,6 +14,8 @@ import com.example.translator_2.api.DataModel
 import com.example.translator_2.databinding.ActivityMainBinding
 import com.example.translator_2.presentation.viewmodels.MainViewModel
 import dagger.android.AndroidInjection
+import org.koin.android.compat.ScopeCompat.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import javax.inject.Inject
 
 class MainActivity : BaseActivity<AppState>() {
@@ -21,8 +23,7 @@ class MainActivity : BaseActivity<AppState>() {
 //    override val model: MainViewModel by lazy {
 //        ViewModelProvider(this)[MainViewModel::class.java]
 //    }
-    @Inject
-    internal lateinit var viewModelFactory: ViewModelProvider.Factory
+
     override lateinit var model: MainViewModel
 
     //Создаем Observer, с помощью которого подписываемся на изменения LiveData
@@ -39,28 +40,45 @@ class MainActivity : BaseActivity<AppState>() {
             }
         }
 
+    private fun initView() {
+        binding.searchFab.setOnClickListener { (fabClickListener()) }
+        binding.mainActivityRecyclerview.layoutManager =
+            LinearLayoutManager(applicationContext)
+        binding.mainActivityRecyclerview.adapter = adapter
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
+
 
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        model = viewModelFactory.create(MainViewModel::class.java)
-        model.subscribe().observe(this@MainActivity, Observer<AppState> { renderData(it) })
+        initViewModel()
 
-        binding.searchFab.setOnClickListener {
-            val searchDialogFragment = SearchDialogFragment.newInstance()
-            searchDialogFragment.setOnSearchClickListener(object :
-                SearchDialogFragment.OnSearchClickListener {
-                override fun onClick(searchWord: String) {
-                    //получаем LiveData через метод getData и подписываемся
-                    // на изменения, передавая туда observer
-                    model.getData(searchWord, true).observe(this@MainActivity, observer)
-                }
-            })
-            searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
+        initView()
+    }
+
+    private fun initViewModel() {
+        if(binding.mainActivityRecyclerview.adapter != null) {
+            throw IllegalStateException("The ViewModel should be initialized first")
         }
+        val viewModel: MainViewModel by viewModel()
+        model = viewModel
+        model.subscribe().observe(this@MainActivity, Observer<AppState> { renderData(it) })
+    }
+
+    private fun fabClickListener() {
+        val searchDialogFragment = SearchDialogFragment.newInstance()
+        searchDialogFragment.setOnSearchClickListener(object :
+            SearchDialogFragment.OnSearchClickListener {
+            override fun onClick(searchWord: String) {
+                //получаем LiveData через метод getData и подписываемся
+                // на изменения, передавая туда observer
+                model.getData(searchWord, true).observe(this@MainActivity, observer)
+            }
+        })
+        searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
     }
 
     override fun renderData(appState: AppState) {
