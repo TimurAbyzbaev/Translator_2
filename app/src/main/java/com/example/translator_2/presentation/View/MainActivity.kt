@@ -14,7 +14,9 @@ import com.example.translator_2.Interactors.MainInteractor
 import com.example.translator_2.R
 import com.example.translator_2.api.DataModel
 import com.example.translator_2.databinding.ActivityMainBinding
+import com.example.translator_2.presentation.View.description.DescriptionActivity
 import com.example.translator_2.presentation.viewmodels.MainViewModel
+import com.example.translator_2.utils.convertMeaningsToString
 import com.example.translator_2.utils.network.isOnline
 import dagger.android.AndroidInjection
 import org.koin.android.compat.ScopeCompat.viewModel
@@ -32,7 +34,14 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
             override fun onItemClick(data: DataModel) {
-                Toast.makeText(this@MainActivity, data.text, Toast.LENGTH_SHORT).show()
+                startActivity(
+                    DescriptionActivity.getIntent(
+                        this@MainActivity,
+                        data.text!!,
+                        convertMeaningsToString(data.meanings!!),
+                        data.meanings[0].imageUrl
+                    )
+                )
             }
         }
 
