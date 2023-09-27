@@ -59,7 +59,6 @@ class DescriptionActivity: AppCompatActivity() {
         }else {
             usePicassoToLoadPhoto(binding.descriptionImageview, imageLink)
         }
-
     }
 
     private fun usePicassoToLoadPhoto(imageView: ImageView, imageLink: String) {
