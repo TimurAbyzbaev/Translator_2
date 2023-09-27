@@ -1,14 +1,12 @@
-package com.example.translator_2.presentation.viewmodels
+package com.example.translator_2.presentation.viewmodels.main
 
 import androidx.lifecycle.LiveData
-import com.example.translator_2.AppState
-import com.example.translator_2.Interactors.MainInteractor
+import com.example.translator_2.model.AppState
+import com.example.translator_2.presentation.viewmodels.BaseViewModel
 import com.example.translator_2.utils.parseSearchResults
-import io.reactivex.observers.DisposableObserver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 class MainViewModel(
     private val interactor: MainInteractor

@@ -1,6 +1,4 @@
-package com.example.translator_2.Interactors
-
-import io.reactivex.Observable
+package com.example.translator_2.presentation.viewmodels
 
 interface Interactor<T> {
     //Use Case: получение данных для вывода на экран

@@ -1,7 +1,7 @@
-package com.example.translator_2.api
+package com.example.translator_2.model.Data_source
 
 
-import io.reactivex.Observable
+import com.example.translator_2.model.data.DataModel
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Query

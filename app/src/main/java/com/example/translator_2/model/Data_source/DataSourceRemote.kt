@@ -1,9 +1,6 @@
-package com.example.translator_2.Data_source
+package com.example.translator_2.model.Data_source
 
-import com.example.translator_2.api.DataModel
-import com.example.translator_2.repository.RetrofitImplementation
-import com.example.translator_2.repository.RoomDataBaseImplementation
-import io.reactivex.Observable
+import com.example.translator_2.model.data.DataModel
 
 class DataSourceRemote(
     private val remoteProvider: RetrofitImplementation =
@@ -14,7 +11,8 @@ class DataSourceRemote(
 }
 
 class DataSourceLocal(private val remoteProvider: RoomDataBaseImplementation =
-    RoomDataBaseImplementation()) :
-        DataSource<List<DataModel>> {
+    RoomDataBaseImplementation()
+) :
+    DataSource<List<DataModel>> {
     override suspend fun getData(word: String): List<DataModel> = remoteProvider.getData(word)
 }

@@ -1,14 +1,12 @@
 package com.example.translator_2.di.koin
 
-import com.example.translator_2.Interactors.MainInteractor
-import com.example.translator_2.api.DataModel
-import com.example.translator_2.di.koin.NAME_REMOTE
-import com.example.translator_2.di.koin.NAME_LOCAL
-import com.example.translator_2.presentation.viewmodels.MainViewModel
-import com.example.translator_2.repository.Repository
-import com.example.translator_2.repository.RepositoryImplementation
-import com.example.translator_2.repository.RetrofitImplementation
-import com.example.translator_2.repository.RoomDataBaseImplementation
+import com.example.translator_2.presentation.viewmodels.main.MainInteractor
+import com.example.translator_2.model.data.DataModel
+import com.example.translator_2.presentation.viewmodels.main.MainViewModel
+import com.example.translator_2.model.repository.Repository
+import com.example.translator_2.model.repository.RepositoryImplementation
+import com.example.translator_2.model.Data_source.RetrofitImplementation
+import com.example.translator_2.model.Data_source.RoomDataBaseImplementation
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 

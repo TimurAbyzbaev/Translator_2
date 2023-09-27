@@ -1,8 +1,7 @@
-package com.example.translator_2.repository
+package com.example.translator_2.model.repository
 
-import com.example.translator_2.Data_source.DataSource
-import com.example.translator_2.api.DataModel
-import io.reactivex.Observable
+import com.example.translator_2.model.Data_source.DataSource
+import com.example.translator_2.model.data.DataModel
 
 class RepositoryImplementation(private val dataSource: DataSource<List<DataModel>>) :
     Repository<List<DataModel>> {

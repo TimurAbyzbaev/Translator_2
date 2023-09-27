@@ -1,27 +1,22 @@
-package com.example.translator_2.presentation.View
+package com.example.translator_2.presentation.View.main
 
 
 import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.Toast
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.translator_2.AppState
-import com.example.translator_2.Interactors.MainInteractor
+import com.example.translator_2.model.AppState
 import com.example.translator_2.R
-import com.example.translator_2.api.DataModel
 import com.example.translator_2.databinding.ActivityMainBinding
+import com.example.translator_2.model.data.DataModel
+import com.example.translator_2.presentation.View.base.BaseActivity
 import com.example.translator_2.presentation.View.description.DescriptionActivity
-import com.example.translator_2.presentation.viewmodels.MainViewModel
+import com.example.translator_2.presentation.viewmodels.main.MainInteractor
+import com.example.translator_2.presentation.viewmodels.main.MainViewModel
 import com.example.translator_2.utils.convertMeaningsToString
 import com.example.translator_2.utils.network.isOnline
-import dagger.android.AndroidInjection
-import org.koin.android.compat.ScopeCompat.viewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import javax.inject.Inject
 
 class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
@@ -29,7 +24,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val adapter: MainAdapter by lazy { MainAdapter(onListItemClickListener)}
+    private val adapter: MainAdapter by lazy { MainAdapter(onListItemClickListener) }
 
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
@@ -73,7 +68,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
     }
 
     private fun initViewModel() {
-        if(binding.mainActivityRecyclerview.adapter != null) {
+        if (binding.mainActivityRecyclerview.adapter != null) {
             throw IllegalStateException("The ViewModel should be initialized first")
         }
         val viewModel: MainViewModel by viewModel()
@@ -83,10 +78,10 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
     private val fabClickListener: View.OnClickListener =
         View.OnClickListener {
-        val searchDialogFragment = SearchDialogFragment.newInstance()
-        searchDialogFragment.setOnSearchClickListener(onSearchClickListener)
-        searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
-    }
+            val searchDialogFragment = SearchDialogFragment.newInstance()
+            searchDialogFragment.setOnSearchClickListener(onSearchClickListener)
+            searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
+        }
 
     override fun renderData(appState: AppState) {
         when (appState) {
@@ -96,7 +91,8 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
                 if (dataModel.isNullOrEmpty()) {
                     showAlertDialog(
                         getString(R.string.dialog_title_sorry),
-                        getString(R.string.empty_server_response_on_success))
+                        getString(R.string.empty_server_response_on_success)
+                    )
                 } else {
                     adapter.setData(dataModel)
                 }

@@ -1,11 +1,8 @@
 package com.example.translator_2.presentation.viewmodels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.translator_2.AppState
-import com.example.translator_2.rx.SchedulerProvider
-import io.reactivex.disposables.CompositeDisposable
+import com.example.translator_2.model.AppState
 import kotlinx.coroutines.*
 
 abstract class BaseViewModel<T : AppState>(

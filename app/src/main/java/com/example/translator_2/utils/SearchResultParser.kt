@@ -1,8 +1,8 @@
 package com.example.translator_2.utils
 
-import com.example.translator_2.AppState
-import com.example.translator_2.api.DataModel
-import com.example.translator_2.api.Meanings
+import com.example.translator_2.model.AppState
+import com.example.translator_2.model.data.DataModel
+import com.example.translator_2.model.data.Meanings
 
 fun parseSearchResults(data: AppState): AppState {
     val newSearchResults = arrayListOf<DataModel>()

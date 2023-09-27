@@ -1,8 +1,6 @@
-package com.example.translator_2.repository
+package com.example.translator_2.model.Data_source
 
-import com.example.translator_2.Data_source.DataSource
-import com.example.translator_2.api.DataModel
-import io.reactivex.Observable
+import com.example.translator_2.model.data.DataModel
 
 class RoomDataBaseImplementation: DataSource<List<DataModel>> {
     override suspend fun getData(word: String): List<DataModel> {

@@ -1,11 +1,7 @@
-package com.example.translator_2.repository
+package com.example.translator_2.model.Data_source
 
-import com.example.translator_2.Data_source.DataSource
-import com.example.translator_2.api.ApiService
-import com.example.translator_2.api.DataModel
+import com.example.translator_2.model.data.DataModel
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import io.reactivex.Observable
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

@@ -1,4 +1,4 @@
-package com.example.translator_2.presentation.View
+package com.example.translator_2.presentation.View.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.translator_2.R
-import com.example.translator_2.api.DataModel
+import com.example.translator_2.model.data.DataModel
 
 class MainAdapter(
     private var onListItemClickListener: OnListItemClickListener

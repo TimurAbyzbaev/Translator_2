@@ -1,9 +1,9 @@
-package com.example.translator_2.Interactors
+package com.example.translator_2.presentation.viewmodels.main
 
-import com.example.translator_2.AppState
-import com.example.translator_2.api.DataModel
-import com.example.translator_2.repository.Repository
-import io.reactivex.Observable
+import com.example.translator_2.model.AppState
+import com.example.translator_2.presentation.viewmodels.Interactor
+import com.example.translator_2.model.data.DataModel
+import com.example.translator_2.model.repository.Repository
 
 class MainInteractor(
     private val remoteRepository: Repository<List<DataModel>>,

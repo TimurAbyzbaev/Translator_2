@@ -1,11 +1,11 @@
-package com.example.translator_2.presentation.View
+package com.example.translator_2.presentation.View.base
 
 
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.translator_2.AppState
-import com.example.translator_2.Interactors.Interactor
+import com.example.translator_2.model.AppState
+import com.example.translator_2.presentation.viewmodels.Interactor
 import com.example.translator_2.R
 import com.example.translator_2.presentation.viewmodels.BaseViewModel
 import com.example.translator_2.utils.network.isOnline
