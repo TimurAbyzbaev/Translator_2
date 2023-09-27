@@ -3,6 +3,32 @@ package com.example.translator_2.utils
 import com.example.translator_2.model.AppState
 import com.example.translator_2.model.data.DataModel
 import com.example.translator_2.model.data.Meanings
+import com.example.translator_2.model.room.HistoryEntity
+
+fun mapHistoryEntityToSearchResult(list: List<HistoryEntity>): List<DataModel> {
+    val searchResult = ArrayList<DataModel>()
+
+    if(!list.isNullOrEmpty()){
+        for (entity in list) {
+            searchResult.add(DataModel(entity.word, null))
+        }
+    }
+    return searchResult
+}
+
+fun convertDataModelSuccessToEntity(appState: AppState): HistoryEntity? {
+    return when(appState){
+        is AppState.Success -> {
+            val searchResult = appState.data
+            if (searchResult.isNullOrEmpty() || searchResult[0].text.isNullOrEmpty()) {
+                null
+            } else {
+                HistoryEntity(searchResult[0].text!!, null)
+            }
+        }
+        else -> null
+    }
+}
 
 fun parseSearchResults(data: AppState): AppState {
     val newSearchResults = arrayListOf<DataModel>()
