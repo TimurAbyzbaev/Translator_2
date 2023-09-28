@@ -1,4 +1,4 @@
-package com.example.translator_2.presentation.View.description
+package com.example.translator_2.presentation.view.description
 
 import android.content.Context
 import android.content.Intent

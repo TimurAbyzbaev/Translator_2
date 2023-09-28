@@ -13,7 +13,6 @@ class MainViewModel(
 ) : BaseViewModel<AppState>() {
 
     private val liveDataForViewToObserve: LiveData<AppState> = _mutableLiveData
-    private var appState: AppState? = null
 
     fun subscribe(): LiveData<AppState> {
         return liveDataForViewToObserve

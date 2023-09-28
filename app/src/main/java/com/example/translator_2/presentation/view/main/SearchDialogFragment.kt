@@ -1,4 +1,4 @@
-package com.example.translator_2.presentation.View.main
+package com.example.translator_2.presentation.view.main
 
 import android.os.Bundle
 import android.text.Editable
