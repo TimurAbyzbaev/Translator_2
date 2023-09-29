@@ -10,7 +10,7 @@ import com.example.translator_2.model.data.DataModel
 import com.example.translator_2.utils.convertMeaningsToString
 
 class MainAdapter (
-    private var onListItemClickListener: OnListItemClickListenerr
+    private var onListItemClick: (DataModel) -> Unit
 ) :RecyclerView.Adapter<MainAdapter.RecyclerItemViewHolder>() {
 
     private var data: List<DataModel> = arrayListOf()
@@ -47,6 +47,6 @@ class MainAdapter (
     }
 
     private fun openInNewWindow(listItemData: DataModel) {
-        onListItemClickListener.onItemClick(listItemData)
+        onListItemClick(listItemData)
     }
 }
