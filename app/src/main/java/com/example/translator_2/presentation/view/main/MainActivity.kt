@@ -7,12 +7,12 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
-import com.example.translator_2.model.AppState
 import com.example.translator_2.R
 import com.example.translator_2.databinding.ActivityMainBinding
+import com.example.translator_2.model.AppState
 import com.example.translator_2.model.data.DataModel
 import com.example.translator_2.presentation.view.base.BaseActivity
-import com.example.translator_2.presentation.view.description.DescriptionActivity
+import com.example.translator_2.presentation.view.base.description.DescriptionActivity
 import com.example.translator_2.presentation.view.history.HistoryActivity
 import com.example.translator_2.presentation.viewmodels.main.MainInteractor
 import com.example.translator_2.presentation.viewmodels.main.MainViewModel
@@ -36,6 +36,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
         }
 
     private fun onItemClick(data: DataModel) {
+        model.saveInDB(data)
         startActivity(
             DescriptionActivity.getIntent(
                 this@MainActivity,
@@ -57,6 +58,14 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
                 }
             }
         }
+
+    private val onHistorySearchClickListener: SearchDialogFragment.OnSearchClickListener =
+        object : SearchDialogFragment.OnSearchClickListener {
+            override fun onClick(searchWord: String) {
+                model.getData(searchWord, false)
+            }
+        }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +90,12 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
         return when (item.itemId) {
             R.id.menu_history -> {
                 startActivity(Intent(this, HistoryActivity::class.java))
+                true
+            }
+            R.id.menu_history_search -> {
+                val searchDialogFragment = SearchDialogFragment.newInstance()
+                searchDialogFragment.setOnSearchClickListener(onHistorySearchClickListener)
+                searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
                 true
             }
             else -> super.onOptionsItemSelected(item)

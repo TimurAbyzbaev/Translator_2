@@ -1,17 +1,17 @@
 package com.example.translator_2.presentation.view.main
 
 import android.view.LayoutInflater
-import android.view.ViewGroup
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.translator_2.R
 import com.example.translator_2.model.data.DataModel
 import com.example.translator_2.utils.convertMeaningsToString
 
-class MainAdapter (
+class MainAdapter(
     private var onListItemClick: (DataModel) -> Unit
-) :RecyclerView.Adapter<MainAdapter.RecyclerItemViewHolder>() {
+) : RecyclerView.Adapter<MainAdapter.RecyclerItemViewHolder>() {
 
     private var data: List<DataModel> = arrayListOf()
 
@@ -38,7 +38,8 @@ class MainAdapter (
     inner class RecyclerItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(data: DataModel) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
-                itemView.findViewById<TextView>(R.id.header_textview_recycler_item).text = data?.text
+                itemView.findViewById<TextView>(R.id.header_textview_recycler_item).text =
+                    data?.text
                 itemView.findViewById<TextView>(R.id.description_textview_recycler_item).text =
                     convertMeaningsToString(data.meanings!!)
                 itemView.setOnClickListener { openInNewWindow(data) }
@@ -49,4 +50,6 @@ class MainAdapter (
     private fun openInNewWindow(listItemData: DataModel) {
         onListItemClick(listItemData)
     }
+
+
 }

@@ -3,6 +3,7 @@ package com.example.translator_2.utils
 import com.example.translator_2.model.AppState
 import com.example.translator_2.model.data.DataModel
 import com.example.translator_2.model.data.Meanings
+import com.example.translator_2.model.data.Translation
 import com.example.translator_2.model.room.HistoryEntity
 
 fun mapHistoryEntityToSearchResult(list: List<HistoryEntity>): List<DataModel> {
@@ -10,25 +11,31 @@ fun mapHistoryEntityToSearchResult(list: List<HistoryEntity>): List<DataModel> {
 
     if (!list.isNullOrEmpty()) {
         for (entity in list) {
-            searchResult.add(DataModel(entity.word, null))
+            val meaningsList = List<Meanings>(1) {
+                Meanings(Translation(entity.translation), entity.imageUrl)
+            }
+            searchResult.add(DataModel(entity.word, meaningsList))
         }
     }
 
     return searchResult
 }
 
-fun convertDataModelSuccessToEntity(appState: AppState): HistoryEntity? {
-    return when (appState) {
-        is AppState.Success -> {
-            val searchResult = appState.data
+fun convertDataModelSuccessToEntity(data: DataModel): HistoryEntity? {
 
-            if (searchResult.isNullOrEmpty() || searchResult[0].text.isNullOrEmpty()) {
-                null
-            } else {
-                HistoryEntity(searchResult[0].text!!, null)
-            }
-        }
-        else -> null
+    return if (data.text.isNullOrBlank() ||
+        data.meanings?.get(0)?.imageUrl.isNullOrEmpty() ||
+        data.meanings?.get(0)?.translation?.translation.isNullOrBlank()
+    ) {
+        null
+    } else {
+        var translations = convertMeaningsToString(data.meanings!!)
+        HistoryEntity(
+            data.text,
+            data.text,
+            translations,
+            data.meanings[0].imageUrl
+        )
     }
 }
 
@@ -71,7 +78,7 @@ private fun getSuccessResultData(
             }
         } else {
             for (searchResult in dataModels) {
-                newDataModels.add(DataModel(searchResult.text, arrayListOf()))
+                newDataModels.add(DataModel(searchResult.text, searchResult.meanings))
             }
         }
     }

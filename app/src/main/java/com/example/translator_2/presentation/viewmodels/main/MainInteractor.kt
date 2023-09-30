@@ -15,10 +15,14 @@ class MainInteractor(
 
         if (fromRemoteSource) {
             appState = AppState.Success(remoteRepository.getData(word))
-            localRepository.saveToDB(appState)
+
         } else {
-            appState = AppState.Success(localRepository.getData(word))
+            appState = AppState.Success(localRepository.getWord(word))
         }
         return appState
+    }
+
+    suspend fun saveInDB(data: DataModel) {
+        localRepository.saveToDB(data)
     }
 }

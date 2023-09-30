@@ -3,6 +3,7 @@ package com.example.translator_2.presentation.view.base
 
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.translator_2.R
@@ -64,7 +65,11 @@ abstract class BaseActivity<T : AppState, I : Interactor<T>> : AppCompatActivity
             }
             is AppState.Error -> {
                 showViewWorking()
-                showAlertDialog(getString(R.string.error_stub), appState.error.message)
+                if(appState.error.cause == NullPointerException().cause){
+                    showAlertDialog(getString(R.string.error_stub), getString(R.string.not_found_in_history))
+                } else{
+                    showAlertDialog(getString(R.string.error_stub), appState.error.message)
+                }
             }
         }
     }

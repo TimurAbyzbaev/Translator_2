@@ -2,6 +2,7 @@ package com.example.translator_2.presentation.viewmodels.main
 
 import androidx.lifecycle.LiveData
 import com.example.translator_2.model.AppState
+import com.example.translator_2.model.data.DataModel
 import com.example.translator_2.presentation.viewmodels.BaseViewModel
 import com.example.translator_2.utils.parseSearchResults
 import kotlinx.coroutines.Dispatchers
@@ -43,5 +44,13 @@ class MainViewModel(
     override fun onCleared() {
         _mutableLiveData.value = AppState.Success(null)
         super.onCleared()
+    }
+
+    fun saveInDB(data: DataModel) {
+        viewModelCoroutineScope.launch {
+            withContext(Dispatchers.Default) {
+                interactor.saveInDB(data)
+            }
+        }
     }
 }

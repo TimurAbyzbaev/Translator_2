@@ -24,7 +24,6 @@ class HistoryViewModel(
 
     //переопределение метода из BaseViewModel
     override fun getData(word: String, isOnline: Boolean) {
-        Log.d("#####", "Word is: $word")
         _mutableLiveData.value = AppState.Loading(null)
         cancelJob()
         viewModelCoroutineScope.launch { startInteractor(word, isOnline) }
@@ -37,6 +36,5 @@ class HistoryViewModel(
     override fun handleError(error: Throwable) {
         _mutableLiveData.postValue(AppState.Error(error))
     }
-
 
 }

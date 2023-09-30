@@ -15,4 +15,6 @@
     <string name="error_stub">Error</string>
     <string name="image_stub">Image</string>
     <string name="menu_title_history">Menu</string>
+    <string name="history_search_hint">Search in local</string>
+    <string name="not_found_in_history">This word was not found in the search history</string>
 </resources>

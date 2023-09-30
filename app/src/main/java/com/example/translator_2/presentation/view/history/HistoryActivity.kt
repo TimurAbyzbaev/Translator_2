@@ -6,14 +6,16 @@ import com.example.translator_2.databinding.ActivityHistoryBinding
 import com.example.translator_2.model.AppState
 import com.example.translator_2.model.data.DataModel
 import com.example.translator_2.presentation.view.base.BaseActivity
+import com.example.translator_2.presentation.view.base.description.DescriptionActivity
 import com.example.translator_2.presentation.viewmodels.history.HistoryInteractor
 import com.example.translator_2.presentation.viewmodels.history.HistoryViewModel
+import com.example.translator_2.utils.convertMeaningsToString
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HistoryActivity : BaseActivity<AppState, HistoryInteractor>() {
     private lateinit var binding: ActivityHistoryBinding
     override lateinit var model: HistoryViewModel
-    private val adapter: HistoryAdapter by lazy { HistoryAdapter() }
+    private val adapter: HistoryAdapter by lazy { HistoryAdapter(::onItemClick) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +24,18 @@ class HistoryActivity : BaseActivity<AppState, HistoryInteractor>() {
 
         iniViewModel()
         initViews()
+    }
+
+    private fun onItemClick(data: DataModel) {
+        //model.getData(data.text!!, false)
+        startActivity(
+            DescriptionActivity.getIntent(
+                this@HistoryActivity,
+                data.text!!,
+                convertMeaningsToString(data.meanings!!),
+                data.meanings[0].imageUrl
+            )
+        )
     }
 
     override fun onResume() {

@@ -4,12 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.translator_2.R
 import com.example.translator_2.model.data.DataModel
 
-class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.RecyclerItemViewHolder>() {
+class HistoryAdapter(
+    private var onListItemClick: (DataModel) -> Unit
+) : RecyclerView.Adapter<HistoryAdapter.RecyclerItemViewHolder>() {
 
     private var data: List<DataModel> = arrayListOf()
 
@@ -26,7 +27,7 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.RecyclerItemViewHolde
     }
 
     override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-        holder.bind(data[position])
+        holder.bind(data.get(position))
     }
 
     override fun getItemCount(): Int {
@@ -40,10 +41,13 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.RecyclerItemViewHolde
                 itemView.findViewById<TextView>(R.id.header_history_textview_recycler_item).text =
                     data.text
                 itemView.setOnClickListener {
-                    Toast.makeText(itemView.context, "on click: ${data.text}", Toast.LENGTH_SHORT)
-                        .show()
+                    openInNewWindow(data)
                 }
             }
         }
+    }
+
+    private fun openInNewWindow(listItemData: DataModel) {
+        onListItemClick(listItemData)
     }
 }

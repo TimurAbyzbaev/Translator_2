@@ -6,4 +6,9 @@
         android:title="@string/menu_title_history"
         android:icon="@drawable/ic_history"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_history_search"
+        android:title="@string/history_search_hint"
+        android:icon="@drawable/baseline_youtube_searched_for_24"
+        app:showAsAction="ifRoom"/>
 </menu>
