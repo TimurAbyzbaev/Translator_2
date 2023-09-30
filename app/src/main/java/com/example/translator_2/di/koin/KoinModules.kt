@@ -1,27 +1,39 @@
 package com.example.translator_2.di.koin
 
-import com.example.translator_2.Interactors.MainInteractor
-import com.example.translator_2.api.DataModel
-import com.example.translator_2.di.koin.NAME_REMOTE
-import com.example.translator_2.di.koin.NAME_LOCAL
-import com.example.translator_2.presentation.viewmodels.MainViewModel
-import com.example.translator_2.repository.Repository
-import com.example.translator_2.repository.RepositoryImplementation
-import com.example.translator_2.repository.RetrofitImplementation
-import com.example.translator_2.repository.RoomDataBaseImplementation
-import org.koin.core.qualifier.named
+import androidx.room.Room
+import com.example.translator_2.model.Data_source.RetrofitImplementation
+import com.example.translator_2.model.Data_source.RoomDataBaseImplementation
+import com.example.translator_2.model.data.DataModel
+import com.example.translator_2.model.repository.Repository
+import com.example.translator_2.model.repository.RepositoryImplementation
+import com.example.translator_2.model.repository.RepositoryImplementationLocal
+import com.example.translator_2.model.repository.RepositoryLocal
+import com.example.translator_2.model.room.HistoryDataBase
+import com.example.translator_2.presentation.viewmodels.history.HistoryInteractor
+import com.example.translator_2.presentation.viewmodels.history.HistoryViewModel
+import com.example.translator_2.presentation.viewmodels.main.MainInteractor
+import com.example.translator_2.presentation.viewmodels.main.MainViewModel
 import org.koin.dsl.module
 
 val application = module {
-    single<Repository<List<DataModel>>>(named(NAME_REMOTE)) {
-        RepositoryImplementation(RetrofitImplementation())
-    }
-    single<Repository<List<DataModel>>>(named(NAME_LOCAL)) {
-        RepositoryImplementation(RoomDataBaseImplementation())
+
+    single { Room.databaseBuilder(get(), HistoryDataBase::class.java, "HistoryDB").build() }
+    single { get<HistoryDataBase>().historyDao() }
+
+    single<Repository<List<DataModel>>> { RepositoryImplementation(RetrofitImplementation()) }
+    single<RepositoryLocal<List<DataModel>>> {
+        RepositoryImplementationLocal(
+            RoomDataBaseImplementation(get())
+        )
     }
 }
 
 val mainScreen = module {
-    factory { MainInteractor(get(named(NAME_REMOTE)), get(named(NAME_LOCAL))) }
+    factory { MainInteractor(get(), get()) }
     factory { MainViewModel(get()) }
+}
+
+val historyScreen = module {
+    factory { HistoryInteractor(get(), get()) }
+    factory { HistoryViewModel(get()) }
 }

@@ -1,11 +1,8 @@
 package com.example.translator_2.presentation.viewmodels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.translator_2.AppState
-import com.example.translator_2.rx.SchedulerProvider
-import io.reactivex.disposables.CompositeDisposable
+import com.example.translator_2.model.AppState
 import kotlinx.coroutines.*
 
 abstract class BaseViewModel<T : AppState>(
@@ -25,8 +22,8 @@ abstract class BaseViewModel<T : AppState>(
 
     protected val viewModelCoroutineScope = CoroutineScope(
         Dispatchers.Main
-                    + SupervisorJob()
-                    + CoroutineExceptionHandler {_, throwable -> handleError(throwable)}
+                + SupervisorJob()
+                + CoroutineExceptionHandler { _, throwable -> handleError(throwable) }
     )
 
     abstract fun getData(word: String, isOnline: Boolean)
@@ -35,7 +32,8 @@ abstract class BaseViewModel<T : AppState>(
         super.onCleared()
         cancelJob()
     }
-    protected fun cancelJob(){
+
+    protected fun cancelJob() {
         viewModelCoroutineScope.coroutineContext.cancelChildren()
     }
 
