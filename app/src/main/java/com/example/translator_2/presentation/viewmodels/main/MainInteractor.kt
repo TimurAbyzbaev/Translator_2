@@ -1,15 +1,13 @@
 package com.example.translator_2.presentation.viewmodels.main
 
-import com.example.translator_2.model.AppState
-import com.example.translator_2.model.data.DataModel
-import com.example.translator_2.model.repository.Repository
-import com.example.translator_2.model.repository.RepositoryLocal
-import com.example.translator_2.presentation.viewmodels.Interactor
+import com.example.model.AppState
+import com.example.model.data.DataModel
+import com.example.core.viewmodel.Interactor
 
 class MainInteractor(
-    private val remoteRepository: Repository<List<DataModel>>,
-    private val localRepository: RepositoryLocal<List<DataModel>>,
-) : Interactor<AppState> {
+    private val remoteRepository: com.example.repository.Repository<List<DataModel>>,
+    private val localRepository: com.example.repository.RepositoryLocal<List<DataModel>>,
+) : com.example.core.viewmodel.Interactor<AppState> {
     override suspend fun getData(word: String, fromRemoteSource: Boolean): AppState {
         val appState: AppState
 
@@ -22,7 +20,7 @@ class MainInteractor(
         return appState
     }
 
-    suspend fun saveInDB(data: DataModel) {
+    suspend fun saveInDB(data: com.example.model.data.DataModel) {
         localRepository.saveToDB(data)
     }
 }

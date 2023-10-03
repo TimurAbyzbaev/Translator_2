@@ -7,22 +7,20 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
+import com.example.model.AppState
 import com.example.translator_2.R
 import com.example.translator_2.databinding.ActivityMainBinding
-import com.example.translator_2.model.AppState
-import com.example.translator_2.model.data.DataModel
-import com.example.translator_2.presentation.view.base.BaseActivity
-import com.example.translator_2.presentation.view.base.description.DescriptionActivity
-import com.example.translator_2.presentation.view.history.HistoryActivity
+import com.example.core.description.DescriptionActivity
+import com.example.history.view.HistoryActivity
 import com.example.translator_2.presentation.viewmodels.main.MainInteractor
 import com.example.translator_2.presentation.viewmodels.main.MainViewModel
-import com.example.translator_2.utils.convertMeaningsToString
-import com.example.translator_2.utils.network.isOnline
+import com.example.repository.convertMeaningsToString
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
 
-class MainActivity : BaseActivity<AppState, MainInteractor>() {
+class MainActivity : com.example.core.BaseActivity<AppState, MainInteractor>() {
 
     private lateinit var binding: ActivityMainBinding
     override lateinit var model: MainViewModel
@@ -35,14 +33,14 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
             searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
         }
 
-    private fun onItemClick(data: DataModel) {
+    private fun onItemClick(data: com.example.model.data.DataModel) {
         model.saveInDB(data)
         startActivity(
             DescriptionActivity.getIntent(
                 this@MainActivity,
                 data.text!!,
                 convertMeaningsToString(data.meanings!!),
-                data.meanings[0].imageUrl
+                data.meanings!![0].imageUrl
             )
         )
     }
@@ -50,7 +48,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
     private val onSearchClickListener: SearchDialogFragment.OnSearchClickListener =
         object : SearchDialogFragment.OnSearchClickListener {
             override fun onClick(searchWord: String) {
-                isNetworkAvailable = isOnline(applicationContext)
+                isNetworkAvailable = com.example.utils.network.isOnline(applicationContext)
                 if (isNetworkAvailable) {
                     model.getData(searchWord, isNetworkAvailable)
                 } else {
@@ -77,7 +75,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
     }
 
-    override fun setDataToAdapter(data: List<DataModel>) {
+    override fun setDataToAdapter(data: List<com.example.model.data.DataModel>) {
         adapter.setData(data)
     }
 

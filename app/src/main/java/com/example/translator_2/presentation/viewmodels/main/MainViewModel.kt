@@ -1,17 +1,16 @@
 package com.example.translator_2.presentation.viewmodels.main
 
 import androidx.lifecycle.LiveData
-import com.example.translator_2.model.AppState
-import com.example.translator_2.model.data.DataModel
-import com.example.translator_2.presentation.viewmodels.BaseViewModel
-import com.example.translator_2.utils.parseSearchResults
+import com.example.model.AppState
+import com.example.core.viewmodel.BaseViewModel
+import com.example.repository.parseSearchResults
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainViewModel(
     private val interactor: MainInteractor
-) : BaseViewModel<AppState>() {
+) : com.example.core.viewmodel.BaseViewModel<AppState>() {
 
     private val liveDataForViewToObserve: LiveData<AppState> = _mutableLiveData
 
@@ -46,7 +45,7 @@ class MainViewModel(
         super.onCleared()
     }
 
-    fun saveInDB(data: DataModel) {
+    fun saveInDB(data: com.example.model.data.DataModel) {
         viewModelCoroutineScope.launch {
             withContext(Dispatchers.Default) {
                 interactor.saveInDB(data)

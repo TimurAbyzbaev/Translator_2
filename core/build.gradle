@@ -1,0 +1,28 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.example.core'
+}
+
+dependencies {
+    implementation project(Modules.model)
+    implementation project(Modules.utils)
+
+    implementation Design.appcompat
+    implementation Design.swipe_refresh_layout
+
+    //Picasso
+    implementation Picasso.picasso
+
+    //Kotlin
+    implementation Kotlin.core
+    implementation Kotlin.stdlib
+
+    //Test
+    implementation TestImpl.junit
+    testImplementation TestImpl.junit_ext
+    testImplementation TestImpl.espresso
+}
