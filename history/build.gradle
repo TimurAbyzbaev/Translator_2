@@ -1,0 +1,32 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.example.historyscreen'
+}
+
+dependencies {
+    implementation project(Modules.core)
+    implementation project(Modules.model)
+    implementation project(Modules.repository)
+
+    //Kotlin
+    implementation Kotlin.core
+    implementation Kotlin.stdlib
+    //Design
+    implementation Design.material
+    implementation Design.appcompat
+
+    //Test
+    implementation TestImpl.junit
+    testImplementation TestImpl.junit_ext
+    testImplementation TestImpl.espresso
+
+    //Koin
+    implementation Koin.koin_core
+    implementation Koin.koin_android
+    implementation Koin.koin_android_compat
+
+}

@@ -8,7 +8,7 @@ import com.example.translator_2.databinding.DialogInputBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import android.view.View
 import android.view.ViewGroup
-import com.example.translator_2.utils.ui.getEmptyString
+import com.example.utils.getEmptyString
 
 class SearchDialogFragment : BottomSheetDialogFragment(){
     private var _binding: DialogInputBinding? = null

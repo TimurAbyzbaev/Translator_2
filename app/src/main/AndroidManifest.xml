@@ -23,8 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.view.base.description.DescriptionActivity"/>
-        <activity android:name=".presentation.view.history.HistoryActivity"/>
+        <activity android:name="com.example.core.description.DescriptionActivity"/>
     </application>
 
 </manifest>
