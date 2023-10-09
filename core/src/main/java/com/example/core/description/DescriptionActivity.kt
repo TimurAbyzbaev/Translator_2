@@ -8,16 +8,16 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.core.R
 import com.example.core.databinding.ActivityDescriptionBinding
+import com.example.utils.ui.viewBinding
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import java.lang.Exception
 
 class DescriptionActivity: AppCompatActivity() {
-    private lateinit var binding: ActivityDescriptionBinding
+    private val binding by viewBinding(ActivityDescriptionBinding::inflate)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityDescriptionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setActionHomeButtonAsUp()
