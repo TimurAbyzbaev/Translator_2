@@ -1,13 +1,14 @@
 package com.example.history.viewmodel
 
 import androidx.lifecycle.LiveData
+import com.example.core.viewmodel.BaseViewModel
 import com.example.model.AppState
 import com.example.repository.parseLocalSearchResults
 import kotlinx.coroutines.launch
 
 class HistoryViewModel(
     private val interactor: HistoryInteractor
-) : com.example.core.viewmodel.BaseViewModel<AppState>() {
+) : BaseViewModel<AppState>() {
 
     private val liveDataForViewToObserve: LiveData<AppState> = _mutableLiveData
 

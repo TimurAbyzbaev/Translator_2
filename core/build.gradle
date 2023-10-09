@@ -21,8 +21,14 @@ dependencies {
     implementation Kotlin.core
     implementation Kotlin.stdlib
 
+    //Koin
+    implementation Koin.koin_core
+    implementation Koin.koin_android
+    implementation Koin.koin_android_compat
+
     //Test
     implementation TestImpl.junit
+    implementation 'com.google.android.material:material:1.9.0'
     testImplementation TestImpl.junit_ext
     testImplementation TestImpl.espresso
 }

@@ -1,8 +1,8 @@
 package com.example.repository
 
-import com.example.model.data.DataModel
+import com.example.model.dto.SearchResultDto
 
 interface RepositoryLocal<T> : Repository<T> {
-    suspend fun saveToDB(data: DataModel)
-    suspend fun getWord(word: String): List<DataModel>
+    suspend fun saveToDB(data: SearchResultDto)
+    suspend fun getWord(word: String): List<SearchResultDto>
 }

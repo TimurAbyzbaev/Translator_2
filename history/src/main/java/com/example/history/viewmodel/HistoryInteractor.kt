@@ -1,21 +1,25 @@
 package com.example.history.viewmodel
 
+import com.example.core.viewmodel.Interactor
 import com.example.model.AppState
-import com.example.model.data.DataModel
+import com.example.model.dto.SearchResultDto
 import com.example.repository.Repository
 import com.example.repository.RepositoryLocal
+import com.example.repository.mapSearchResultToResult
 
 class HistoryInteractor(
-    private val remoteRepository: Repository<List<DataModel>>,
-    private val localRepository: RepositoryLocal<List<DataModel>>,
-) : com.example.core.viewmodel.Interactor<AppState> {
+    private val remoteRepository: Repository<List<SearchResultDto>>,
+    private val localRepository: RepositoryLocal<List<SearchResultDto>>,
+) : Interactor<AppState> {
     override suspend fun getData(word: String, fromRemoteSource: Boolean): AppState {
         return AppState.Success(
-            if (fromRemoteSource) {
-                remoteRepository
-            } else {
-                localRepository
-            }.getData(word)
+            mapSearchResultToResult(
+                if (fromRemoteSource) {
+                    remoteRepository
+                } else {
+                    localRepository
+                }.getData(word)
+            )
         )
     }
 }

@@ -7,22 +7,26 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
-import com.example.model.AppState
-import com.example.translator_2.R
-import com.example.translator_2.databinding.ActivityMainBinding
 import com.example.core.description.DescriptionActivity
 import com.example.history.view.HistoryActivity
+import com.example.model.AppState
+import com.example.model.data.DataModel
+import com.example.repository.convertDataModelToHistoryEntity
+import com.example.repository.convertMeaningsToSingleString
+import com.example.translator_2.R
+import com.example.translator_2.databinding.ActivityMainBinding
 import com.example.translator_2.presentation.viewmodels.main.MainInteractor
 import com.example.translator_2.presentation.viewmodels.main.MainViewModel
-import com.example.repository.convertMeaningsToString
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.example.utils.ui.viewBinding
+import org.koin.android.ext.android.inject
 
 
 private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
 
 class MainActivity : com.example.core.BaseActivity<AppState, MainInteractor>() {
 
-    private lateinit var binding: ActivityMainBinding
+    private val binding by viewBinding(ActivityMainBinding::inflate)
+
     override lateinit var model: MainViewModel
     private val adapter: MainAdapter by lazy { MainAdapter(::onItemClick) }
 
@@ -33,14 +37,14 @@ class MainActivity : com.example.core.BaseActivity<AppState, MainInteractor>() {
             searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
         }
 
-    private fun onItemClick(data: com.example.model.data.DataModel) {
-        model.saveInDB(data)
+    private fun onItemClick(data: DataModel) {
+        model.saveInDB(convertDataModelToHistoryEntity(data))
         startActivity(
             DescriptionActivity.getIntent(
                 this@MainActivity,
-                data.text!!,
-                convertMeaningsToString(data.meanings!!),
-                data.meanings!![0].imageUrl
+                data.text,
+                convertMeaningsToSingleString(data.meanings),
+                data.meanings[0].imageUrl
             )
         )
     }
@@ -48,7 +52,6 @@ class MainActivity : com.example.core.BaseActivity<AppState, MainInteractor>() {
     private val onSearchClickListener: SearchDialogFragment.OnSearchClickListener =
         object : SearchDialogFragment.OnSearchClickListener {
             override fun onClick(searchWord: String) {
-                isNetworkAvailable = com.example.utils.network.isOnline(applicationContext)
                 if (isNetworkAvailable) {
                     model.getData(searchWord, isNetworkAvailable)
                 } else {
@@ -64,18 +67,16 @@ class MainActivity : com.example.core.BaseActivity<AppState, MainInteractor>() {
             }
         }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         iniViewModel()
         initViews()
-
+        subscribeToNetworkChange(binding.root)
     }
 
-    override fun setDataToAdapter(data: List<com.example.model.data.DataModel>) {
+    override fun setDataToAdapter(data: List<DataModel>) {
         adapter.setData(data)
     }
 
@@ -105,7 +106,7 @@ class MainActivity : com.example.core.BaseActivity<AppState, MainInteractor>() {
             throw IllegalStateException("The ViewModel should be initialised first")
         }
 
-        val viewModel: MainViewModel by viewModel()
+        val viewModel: MainViewModel by inject()
         model = viewModel
         model.subscribe().observe(this@MainActivity, Observer<AppState> { renderData(it) })
     }

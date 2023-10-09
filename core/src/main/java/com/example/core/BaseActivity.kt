@@ -1,32 +1,52 @@
 package com.example.core
 
-import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.example.core.databinding.LoadingLayoutBinding
 import com.example.core.viewmodel.BaseViewModel
 import com.example.core.viewmodel.Interactor
 import com.example.model.AppState
-import com.example.utils.network.isOnline
+import com.example.model.data.DataModel
+import com.example.model.dto.SearchResultDto
+import com.example.utils.network.OnlineLiveData
+import com.google.android.material.snackbar.Snackbar
+import org.koin.androidx.scope.ScopeActivity
 
 private const val DIALOG_FRAGMENT_TAG = "74a54328-5d62-46bf-ab6b-cbf5d8c79522"
 
-abstract class BaseActivity<T : AppState, I : Interactor<T>> : AppCompatActivity() {
+abstract class BaseActivity<T : AppState, I : Interactor<T>> : ScopeActivity() {
     private lateinit var binding: LoadingLayoutBinding
     abstract val model: BaseViewModel<T>
-    protected var isNetworkAvailable: Boolean = false
+    protected var isNetworkAvailable: Boolean = true
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
-        isNetworkAvailable = isOnline(applicationContext)
+
+
+    protected fun subscribeToNetworkChange(view: View) {
+        val internetConnectionLostSnackbar = Snackbar.make(view, getString(R.string.dialog_title_device_is_offline), Snackbar.LENGTH_INDEFINITE)
+        OnlineLiveData(this).observe(
+            this@BaseActivity,
+            Observer<Boolean> {
+                isNetworkAvailable = it
+                if (!isNetworkAvailable) {
+                    showSnackbar(internetConnectionLostSnackbar)
+                } else {
+                    hideSnackbar(internetConnectionLostSnackbar)
+                }
+            })
+    }
+
+    private fun showSnackbar(snackbar: Snackbar){
+        snackbar.show()
+    }
+    private fun hideSnackbar(snackbar: Snackbar){
+        snackbar.dismiss()
     }
 
     override fun onResume() {
         super.onResume()
         binding = LoadingLayoutBinding.inflate(layoutInflater)
 
-        isNetworkAvailable = isOnline(applicationContext)
+
         if (!isNetworkAvailable && isDialogNull()) {
             showNoInternetConnectionDialog()
         }
@@ -93,5 +113,5 @@ abstract class BaseActivity<T : AppState, I : Interactor<T>> : AppCompatActivity
         return supportFragmentManager.findFragmentByTag(DIALOG_FRAGMENT_TAG) == null
     }
 
-    abstract fun setDataToAdapter(data: List<com.example.model.data.DataModel>)
+    abstract fun setDataToAdapter(data: List<DataModel>)
 }

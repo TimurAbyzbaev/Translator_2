@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.historyscreen.R
 import com.example.model.data.DataModel
+import com.example.model.dto.SearchResultDto
 
 class HistoryAdapter(
     private var onListItemClick: (DataModel) -> Unit
