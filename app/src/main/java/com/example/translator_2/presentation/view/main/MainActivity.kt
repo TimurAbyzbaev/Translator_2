@@ -10,7 +10,9 @@ import androidx.lifecycle.Observer
 import com.example.core.description.DescriptionActivity
 import com.example.history.view.HistoryActivity
 import com.example.model.AppState
-import com.example.repository.convertMeaningsToString
+import com.example.model.data.DataModel
+import com.example.repository.convertDataModelToHistoryEntity
+import com.example.repository.convertMeaningsToSingleString
 import com.example.translator_2.R
 import com.example.translator_2.databinding.ActivityMainBinding
 import com.example.translator_2.presentation.viewmodels.main.MainInteractor
@@ -35,14 +37,14 @@ class MainActivity : com.example.core.BaseActivity<AppState, MainInteractor>() {
             searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
         }
 
-    private fun onItemClick(data: com.example.model.data.DataModel) {
-        model.saveInDB(data)
+    private fun onItemClick(data: DataModel) {
+        model.saveInDB(convertDataModelToHistoryEntity(data))
         startActivity(
             DescriptionActivity.getIntent(
                 this@MainActivity,
-                data.text!!,
-                convertMeaningsToString(data.meanings!!),
-                data.meanings!![0].imageUrl
+                data.text,
+                convertMeaningsToSingleString(data.meanings),
+                data.meanings[0].imageUrl
             )
         )
     }
@@ -50,7 +52,6 @@ class MainActivity : com.example.core.BaseActivity<AppState, MainInteractor>() {
     private val onSearchClickListener: SearchDialogFragment.OnSearchClickListener =
         object : SearchDialogFragment.OnSearchClickListener {
             override fun onClick(searchWord: String) {
-                isNetworkAvailable = com.example.utils.network.isOnline(applicationContext)
                 if (isNetworkAvailable) {
                     model.getData(searchWord, isNetworkAvailable)
                 } else {
@@ -66,17 +67,16 @@ class MainActivity : com.example.core.BaseActivity<AppState, MainInteractor>() {
             }
         }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         iniViewModel()
         initViews()
-
+        subscribeToNetworkChange(binding.root)
     }
 
-    override fun setDataToAdapter(data: List<com.example.model.data.DataModel>) {
+    override fun setDataToAdapter(data: List<DataModel>) {
         adapter.setData(data)
     }
 

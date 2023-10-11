@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.model.data.DataModel
+import com.example.repository.convertMeaningsToSingleString
 import com.example.translator_2.R
-import com.example.repository.convertMeaningsToString
 
 class MainAdapter(
     private var onListItemClick: (DataModel) -> Unit
@@ -41,7 +41,7 @@ class MainAdapter(
                 itemView.findViewById<TextView>(R.id.header_textview_recycler_item).text =
                     data?.text
                 itemView.findViewById<TextView>(R.id.description_textview_recycler_item).text =
-                    convertMeaningsToString(data.meanings!!)
+                    convertMeaningsToSingleString(data.meanings!!)
                 itemView.setOnClickListener { openInNewWindow(data) }
             }
         }

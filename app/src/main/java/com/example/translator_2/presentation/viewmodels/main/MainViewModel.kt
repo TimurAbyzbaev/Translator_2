@@ -2,8 +2,8 @@ package com.example.translator_2.presentation.viewmodels.main
 
 import androidx.lifecycle.LiveData
 import com.example.model.AppState
-import com.example.core.viewmodel.BaseViewModel
-import com.example.repository.parseSearchResults
+import com.example.model.dto.SearchResultDto
+import com.example.repository.parseOnlineSearchResults
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -33,7 +33,7 @@ class MainViewModel(
 
     private suspend fun startInteractor(word: String, isOnline: Boolean) =
         withContext(Dispatchers.IO) {
-            _mutableLiveData.postValue(parseSearchResults(interactor.getData(word, isOnline)))
+            _mutableLiveData.postValue(parseOnlineSearchResults(interactor.getData(word, isOnline)))
         }
 
     override fun handleError(error: Throwable) {
@@ -45,7 +45,7 @@ class MainViewModel(
         super.onCleared()
     }
 
-    fun saveInDB(data: com.example.model.data.DataModel) {
+    fun saveInDB(data: SearchResultDto) {
         viewModelCoroutineScope.launch {
             withContext(Dispatchers.Default) {
                 interactor.saveInDB(data)

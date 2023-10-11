@@ -1,19 +1,19 @@
 package com.example.repository
 
-import com.example.model.data.DataModel
+import com.example.model.dto.SearchResultDto
 import com.example.repository.datasource.DataSourceLocal
 
-class RepositoryImplementationLocal(private val dataSource: DataSourceLocal<List<DataModel>>) :
-    RepositoryLocal<List<DataModel>> {
-    override suspend fun saveToDB(data: DataModel) {
+class RepositoryImplementationLocal(private val dataSource: DataSourceLocal<List<SearchResultDto>>) :
+    RepositoryLocal<List<SearchResultDto>> {
+    override suspend fun saveToDB(data: SearchResultDto) {
         dataSource.saveToDB(data)
     }
 
-    override suspend fun getWord(word: String): List<DataModel> {
+    override suspend fun getWord(word: String): List<SearchResultDto> {
         return dataSource.getWord(word)
     }
 
-    override suspend fun getData(word: String): List<DataModel> {
+    override suspend fun getData(word: String): List<SearchResultDto> {
         return dataSource.getData(word)
     }
 }

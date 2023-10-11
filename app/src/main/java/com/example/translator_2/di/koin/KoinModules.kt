@@ -2,7 +2,7 @@ package com.example.translator_2.di.koin
 
 import androidx.room.Room
 import com.example.history.view.HistoryActivity
-import com.example.model.data.DataModel
+import com.example.model.dto.SearchResultDto
 import com.example.repository.room.HistoryDataBase
 import com.example.history.viewmodel.HistoryInteractor
 import com.example.history.viewmodel.HistoryViewModel
@@ -18,12 +18,12 @@ val application = module {
     single { Room.databaseBuilder(get(), HistoryDataBase::class.java, "HistoryDB").build() }
     single { get<HistoryDataBase>().historyDao() }
 
-    single<com.example.repository.Repository<List<DataModel>>> {
+    single<com.example.repository.Repository<List<SearchResultDto>>> {
         com.example.repository.RepositoryImplementation(
             com.example.repository.datasource.RetrofitImplementation()
         )
     }
-    single<com.example.repository.RepositoryLocal<List<DataModel>>> {
+    single<com.example.repository.RepositoryLocal<List<SearchResultDto>>> {
         com.example.repository.RepositoryImplementationLocal(
             com.example.repository.datasource.RoomDataBaseImplementation(get())
         )

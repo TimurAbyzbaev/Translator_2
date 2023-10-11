@@ -9,7 +9,7 @@ import com.example.history.viewmodel.HistoryViewModel
 import com.example.historyscreen.databinding.ActivityHistoryBinding
 import com.example.model.AppState
 import com.example.model.data.DataModel
-import com.example.repository.convertMeaningsToString
+import com.example.repository.convertMeaningsToSingleString
 import com.example.utils.ui.viewBinding
 import org.koin.android.ext.android.inject
 
@@ -24,15 +24,16 @@ class HistoryActivity : BaseActivity<AppState, HistoryInteractor>() {
 
         iniViewModel()
         initViews()
+        subscribeToNetworkChange(binding.root)
     }
 
     private fun onItemClick(data: DataModel) {
         startActivity(
             DescriptionActivity.getIntent(
                 this@HistoryActivity,
-                data.text!!,
-                convertMeaningsToString(data.meanings!!),
-                data.meanings!![0].imageUrl
+                data.text,
+                convertMeaningsToSingleString(data.meanings),
+                data.meanings[0].imageUrl
             )
         )
     }
