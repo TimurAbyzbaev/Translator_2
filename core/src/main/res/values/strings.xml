@@ -15,7 +15,7 @@
     <string name="menu_title_history">Menu</string>
     <string name="history_search_hint">Search in local</string>
     <string name="not_found_in_history">This word was not found in the search history</string>
-
+    <string name="search_button_description">Search word</string>
 
 
 <!--    <string name="dialog_title_sorry">Sorry</string>-->
